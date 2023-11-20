@@ -127,7 +127,7 @@ class Movies extends Component {
               <div className="col">
                   
               <p>Showing {filtered.length} movies in the database</p>
-              {console.log('sortColumn',this.state.sortColumn)}
+              {/* {console.log('sortColumn',this.state.sortColumn)} */}
               <MoviesTable
               
               sortColumn={this.state.sortColumn} 
