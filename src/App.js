@@ -14,6 +14,10 @@ import AdminPost from './copoments/admin/adminpost';
 import AdminUsers from './copoments/admin/adminusers';
 // import { Redirect } from 'react-router-dom';
 // import axois from 'axios';
+import config from '../src/config.json';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+const apiEndpoint = config.apiEndpoint;
 
 class App extends Component{
 
@@ -32,7 +36,7 @@ class App extends Component{
         <main className='container'>
       {/* <Counters/> */}
             {/* <Movies/> */}
-      
+      <ToastContainer/>
         </main>
         <div className='content'>
         <Routes>            

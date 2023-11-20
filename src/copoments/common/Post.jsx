@@ -1,10 +1,11 @@
-import React, { useEffect,Component } from 'react';
-import queryString from 'query-string';
+import React, { Component } from 'react';
 import axois from 'axios';
-import axios from 'axios';
-import { times } from 'lodash';
+import http from '../service/httpService'
 
-const apiEndpoint  = 'https://jsonplaceholder.typicode.com/posts'
+const apiEndpoint  =  "https://jsonplaceholder.typicode.com/posts";
+
+
+// const apiEndpoint = config.apiEndpoint;
 
 // const Posts = ({match,location})=>{
 //     // const result  = queryString.parse(location.search);
@@ -28,14 +29,14 @@ class Posts extends Component{
     }
 
     async componentDidMount(){
-    const {data}  = await axois.get(apiEndpoint);
+    const {data}  = await http.get(apiEndpoint);
     // console.log(data);
     this.setState({data})
   }
 
   handleAdd=async()=>{
     const obj = {title:'Demo Post Request  Sucess',body:'b'}
-    const {data:post}= await axios.post(apiEndpoint,obj);
+    const {data:post}= await http.post(apiEndpoint,obj);
     // console.log(post)
     const posts = [post,...this.state.data];
     this.setState({data:posts});
@@ -43,8 +44,8 @@ class Posts extends Component{
 
   handleUpdate =async post =>{
     post.title ="Updated "+post.id;
-    const {data}=await axios.put(apiEndpoint+'/'+post.id,post);
-    console.log('UpdateData',data);
+    const {data}=await http.put(apiEndpoint+'/'+post.id,post);
+    // console.log('UpdateData',data);
     const posts = [...this.state.data]
     const index = posts.indexOf(post)
     post[index] ={...post}
@@ -53,14 +54,20 @@ class Posts extends Component{
 
   }
   handleDelete = async post=>{
-    const orginalPosts = this.state.posts;
+    const orginalPosts = this.state.data;
     const posts = this.state.data.filter(p=> p.id !=post.id);
     this.setState({data:posts});
     try{
-    await axios.delete(apiEndpoint+'/'+post.id)
+    await http.delete(apiEndpoint+'/'+post.id)
+    // throw new Error(" Error Occured!")
     } catch(ex){
-        // if (ex.response && ex.response.status   )
-        console.log("Error");
+        if (ex.response && ex.response.status ===404)
+        {alert('This post has already been deleted.')}
+        else{
+            // alert("An unexpected error occured.");
+        }
+        // alert("Error Occured!")
+        this.setState({data:orginalPosts})
     }
     
   }
